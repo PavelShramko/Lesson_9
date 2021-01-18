@@ -14,7 +14,7 @@ import java.lang.Exception
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
-    
+
 
     companion object{
         private const val STR_KEY = "STR_KEY"
@@ -98,9 +98,6 @@ class MainActivity : AppCompatActivity() {
             binding.textView.text = message.value.toString()
             textGot()
         }
-
-
-        // Проба
 
         binding.setEx.setOnClickListener {
             if (binding.setText.text.isNotEmpty()) {
