@@ -3,7 +3,6 @@ package com.example.lesson_9
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
-import android.text.Editable
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -25,16 +24,16 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val eText = binding.setText.text
+        //val eText = binding.setText.text
 
         val prefs = getPreferences(MODE_PRIVATE)
 
         binding.setSp.setOnClickListener {
-            if(binding.setText.text.isNotEmpty()){
+            if(binding.eText.text.isNotEmpty()){
                 prefs.edit().apply {
-                    putString(STR_KEY, eText.toString())
+                    putString(STR_KEY, binding.eText.text.toString())
                     apply()
-                    eText.clear()
+                    binding.eText.text.clear()
                 }
                 textSet()
             }
@@ -51,13 +50,13 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.setIn.setOnClickListener {
-            if(binding.setText.text.isNotEmpty()) {
+            if(binding.eText.text.isNotEmpty()) {
                 try {
                     val output = file.outputStream()
-                    output.write(eText.toString().toByteArray())
+                    output.write(binding.eText.text.toString().toByteArray())
                     output.close()
                     textSet()
-                    eText.clear()
+                    binding.eText.text.clear()
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }
@@ -82,12 +81,14 @@ class MainActivity : AppCompatActivity() {
         val message: MutableLiveData<String?> = MutableLiveData()
 
         binding.setBD.setOnClickListener {
-            if(binding.setText.text.isNotEmpty()) {
+            if(binding.eText.text.isNotEmpty()) {
                 thread {
-                    db.getsWordsDao().setWord(eText.toString())
+                    db.getsWordsDao().setWord(binding.eText.text.toString())
                 }
-                eText.clear()
-                textSet()
+                runOnUiThread {
+                    binding.eText.text.clear()
+                    textSet()
+                }
             } else textIsEmpty()
         }
 
@@ -100,16 +101,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.setEx.setOnClickListener {
-            if (binding.setText.text.isNotEmpty()) {
+            if (binding.eText.text.isNotEmpty()) {
                 if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     Log.d("LOG_TAG", "SD-карта не доступна: " + Environment.getExternalStorageState());
                 }
                 try {
                     val file = File(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
                             "text").outputStream()
-                    file.write(eText.toString().toByteArray())
+                    file.write(binding.eText.text.toString().toByteArray())
                     file.close()
-                    eText.clear()
+                    binding.eText.text.clear()
                     textSet()
                 } catch (e: Exception) {
                     e.printStackTrace()
