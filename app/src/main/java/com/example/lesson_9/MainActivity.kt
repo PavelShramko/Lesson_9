@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //val eText = binding.setText.text
 
         val prefs = getPreferences(MODE_PRIVATE)
 
@@ -135,10 +134,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        binding.button.setOnClickListener {
+            setTheme(R.style.AppTheme);
+            recreate()
+        }
+
 
     }
 
 
+    // Сделать одку функцию
 
     private fun textSet(){
         Toast.makeText(this, "Текст сохранен", Toast.LENGTH_SHORT).show()
